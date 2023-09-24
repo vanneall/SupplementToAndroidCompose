@@ -15,4 +15,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "SupplementToAndroidCompose"
 include(":app")
- 
+include(":fakepopfit")
