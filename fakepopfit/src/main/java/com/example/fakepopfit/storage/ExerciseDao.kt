@@ -7,12 +7,13 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import com.example.fakepopfit.data.Exercise
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ExerciseDao {
 
-    @Query("SELECT * FROM exercise WHERE id = :id")
-    fun getById(id: Int): Exercise
+    @Query("SELECT * FROM exercise WHERE title = :id")
+    fun getById(id: String): Flow<Exercise>
 
     @Query("SELECT * FROM exercise")
     fun getAllExercise(): LiveData<List<Exercise>>

@@ -13,6 +13,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+
             SupplementToAndroidComposeTheme {
                 val navController = rememberNavController()
                 Navigation(navController = navController)
@@ -20,7 +21,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
 
 
 

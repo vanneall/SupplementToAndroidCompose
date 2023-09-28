@@ -5,25 +5,21 @@ import com.example.fakepopfit.data.Exercise
 import com.example.fakepopfit.domain.DeleteUseCase
 import com.example.fakepopfit.domain.GetByIdUseCase
 import com.example.fakepopfit.domain.UpdateUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
+@HiltViewModel
 class InfoViewModel @Inject constructor(
     private val updateUseCase: UpdateUseCase,
     private val deleteUseCase: DeleteUseCase,
     private val getByIdUseCase: GetByIdUseCase
 ) : ViewModel() {
-    lateinit var initExercise: Exercise
 
-    fun setInitialExercise(id: Int) {
-        initExercise = getByIdUseCase.getById(id)
-    }
-
-    private fun isTheSameObject(newExercise: Exercise) = initExercise == newExercise
+    fun getById(id: String): Flow<Exercise> = getByIdUseCase.getById(id)
 
     fun update(newExercise: Exercise) {
-        if (!isTheSameObject(newExercise)) {
-            updateUseCase.update(exercise = newExercise)
-        }
+        updateUseCase.update(exercise = newExercise)
     }
 
     fun delete(exercise: Exercise) {

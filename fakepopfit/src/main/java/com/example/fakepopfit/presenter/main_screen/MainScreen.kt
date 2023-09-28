@@ -11,7 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
@@ -56,16 +56,16 @@ fun MainScreen(list: State<List<Exercise>>, navigate: () -> Unit, openScreen: (S
 
             }
 
-            itemsIndexed(
+            items(
                 items = list.value,
-            ) { index, item ->
+            ) { item ->
                 ExerciseListItem(
                     title = item.title,
                     info = item.currentWeighInKg.toString(),
                     modifier = Modifier
                         .width(360.dp)
                         .height(90.dp)
-                        .clickable { openScreen(index.toString()) }
+                        .clickable { openScreen(item.title) }
                 )
             }
         }

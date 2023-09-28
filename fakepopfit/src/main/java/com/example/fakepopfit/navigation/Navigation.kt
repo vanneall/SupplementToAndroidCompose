@@ -41,13 +41,13 @@ fun Navigation(navController: NavHostController) {
             route = NavigationScreens.EXERCISE_INFO + "/{id}",
             arguments = listOf(
                 navArgument(name = "id") {
-                    type = NavType.IntType
+                    type = NavType.StringType
                 }
             )
         ) {
             val viewModel: InfoViewModel = hiltViewModel()
             ExerciseInfoScreen(
-                id = it.arguments?.getInt("id") ?: 0,
+                id = it.arguments?.getString("id") ?: "",
                 viewModel = viewModel,
                 navigateBack = { navController.popBackStack() })
         }

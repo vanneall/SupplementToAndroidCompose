@@ -12,29 +12,52 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.fakepopfit.data.Exercise
 import com.example.fakepopfit.presenter.add_screen.TopBar
 
 @Composable
-fun ExerciseInfoScreen(id: Int, viewModel: InfoViewModel, navigateBack: () -> Unit) {
-    viewModel.setInitialExercise(id)
+fun ExerciseInfoScreen(id: String, viewModel: InfoViewModel, navigateBack: () -> Unit) {
+
+    val oldExercise = remember {
+        mutableStateOf(
+            Exercise(
+                id = 0,
+                title = "loading",
+                currentWeighInKg = 1f,
+                upWeightInNextTime = false
+            )
+        )
+    }
+    val title = oldExercise.value.title
+
+    LaunchedEffect(
+        key1 = "key",
+        block = { viewModel.getById(id).collect() { oldExercise.value = it } })
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(top = 30.dp)
     ) {
-        TopBar(text = viewModel.initExercise.title, onClick = { navigateBack() })
+        TopBar(
+            text = title,
+            onClick = { navigateBack() })
         Spacer(modifier = Modifier.height(100.dp))
         Row(
             modifier = Modifier
@@ -48,9 +71,16 @@ fun ExerciseInfoScreen(id: Int, viewModel: InfoViewModel, navigateBack: () -> Un
                 modifier = Modifier.align(Alignment.CenterVertically)
             )
             OutlinedTextField(
-                value = viewModel.initExercise.currentWeighInKg.toString(),
-                onValueChange = {},
-                modifier = Modifier.size(height = 50.dp, width = 100.dp),
+                value = oldExercise.value.currentWeighInKg.toString(),
+                onValueChange = {
+                    oldExercise.value = Exercise(
+                        oldExercise.value.id,
+                        oldExercise.value.title,
+                        it.toFloat(),
+                        oldExercise.value.upWeightInNextTime
+                    )
+                },
+                modifier = Modifier.size(height = 60.dp, width = 100.dp),
                 label = { Text(text = "Вес") }
             )
         }
@@ -66,7 +96,17 @@ fun ExerciseInfoScreen(id: Int, viewModel: InfoViewModel, navigateBack: () -> Un
                 fontSize = 16.sp,
                 modifier = Modifier.align(Alignment.CenterVertically)
             )
-            Switch(checked = viewModel.initExercise.upWeightInNextTime, onCheckedChange = null)
+            Switch(
+                checked = oldExercise.value.upWeightInNextTime,
+                onCheckedChange = {
+                    oldExercise.value = Exercise(
+                        oldExercise.value.id,
+                        oldExercise.value.title,
+                        oldExercise.value.currentWeighInKg,
+                        it
+                    )
+                }
+            )
         }
 
         Spacer(modifier = Modifier.height(50.dp))
@@ -76,6 +116,13 @@ fun ExerciseInfoScreen(id: Int, viewModel: InfoViewModel, navigateBack: () -> Un
                 .padding(horizontal = 30.dp),
             horizontalArrangement = Arrangement.End
         ) {
+            IconButton(onClick = {
+                navigateBack()
+                viewModel.delete(oldExercise.value)
+            }) {
+                Icon(imageVector = Icons.Default.Delete, contentDescription = "delete")
+            }
+            Spacer(modifier = Modifier.width(5.dp))
             Button(onClick = { navigateBack() }) {
                 Icon(
                     imageVector = Icons.Default.Close,
@@ -84,7 +131,10 @@ fun ExerciseInfoScreen(id: Int, viewModel: InfoViewModel, navigateBack: () -> Un
                 Text(text = "Отменить", fontSize = 16.sp)
             }
             Spacer(modifier = Modifier.width(10.dp))
-            Button(onClick = { /*TODO*/ }) {
+            Button(onClick = {
+                navigateBack()
+                viewModel.update(oldExercise.value)
+            }) {
                 Icon(
                     imageVector = Icons.Default.Done,
                     contentDescription = "save",
