@@ -1,4 +1,4 @@
-package com.example.fakepopfit.presenter
+package com.example.fakepopfit.presenter.main_screen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -53,12 +53,13 @@ fun ExerciseListItem(title: String, info: String, modifier: Modifier = Modifier)
                     fontSize = 14.sp
                 )
             }
+
             Icon(
-                modifier = Modifier
-                    .align(Alignment.CenterVertically)
-                    .fillMaxHeight(),
                 imageVector = Icons.Default.Edit,
-                contentDescription = "edit",
+                contentDescription = "tag",
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .align(Alignment.CenterVertically)
             )
         }
     }

@@ -1,4 +1,4 @@
-package com.example.fakepopfit.presenter
+package com.example.fakepopfit.presenter.add_screen
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -11,7 +11,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
@@ -27,19 +26,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 
 
-@ExperimentalMaterial3Api
 @Composable
-fun AddExercise(navController: NavController) {
+fun AddExerciseScreen(viewModel: AddExerciseViewModel, navigateBack: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(top = 30.dp)
     ) {
 
-        TopBar(text ="Добавить упражнение", onClick = {navController.popBackStack()})
+        TopBar(text = "Добавить упражнение", onClick = { navigateBack() })
 
         val titleMutableState = remember { mutableStateOf("") }
         OutlinedTextFieldWithInfo(
@@ -62,7 +59,13 @@ fun AddExercise(navController: NavController) {
         )
 
         FloatingActionButton(
-            onClick = {  },
+            onClick = {
+                viewModel.insertUser(
+                    titleMutableState.value,
+                    weightMutableState.value.toFloat()
+                )
+                navigateBack()
+            },
             shape = CircleShape,
             content = { Icon(Icons.Default.Add, contentDescription = "add") },
             modifier = Modifier
@@ -96,13 +99,18 @@ fun TopBar(text: String, modifier: Modifier = Modifier, onClick: () -> Unit) {
     }
 }
 
-@ExperimentalMaterial3Api
 @Composable
-fun OutlinedTextFieldWithInfo(hint: String, value: MutableState<String>, modifier: Modifier = Modifier) {
+fun OutlinedTextFieldWithInfo(
+    hint: String,
+    value: MutableState<String>,
+    modifier: Modifier = Modifier
+) {
     OutlinedTextField(
         value = value.value,
         onValueChange = { value.value = it },
         label = { Text(text = hint) },
-        modifier = modifier
+        modifier = modifier,
+        singleLine = true,
+        maxLines = 1
     )
 }
