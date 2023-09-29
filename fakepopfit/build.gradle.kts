@@ -54,7 +54,17 @@ android {
 
 dependencies {
 
+    //Coil
+    implementation("io.coil-kt:coil-compose:2.4.0")
+
+    //Retrofit
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.5.0")
+
     implementation("androidx.compose.runtime:runtime-livedata:1.5.2")
+
+    //BottomNavBar
+    implementation("androidx.compose.material:material:1.5.2")
 
     //Room
     val room_version = "2.5.2"

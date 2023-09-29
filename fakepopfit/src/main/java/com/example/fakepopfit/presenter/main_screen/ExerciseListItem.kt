@@ -49,7 +49,7 @@ fun ExerciseListItem(title: String, info: String, modifier: Modifier = Modifier)
                     fontWeight = FontWeight.Bold
                 )
                 Text(
-                    text = info,
+                    text = "Текущий вес: $info кг",
                     fontSize = 14.sp
                 )
             }

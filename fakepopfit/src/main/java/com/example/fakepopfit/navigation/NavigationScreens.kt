@@ -5,5 +5,5 @@ object NavigationScreens {
     const val EXERCISE_INFO = "EXERCISE_INFO"
     const val ADD_EXERCISE = "ADD_EXERCISE"
     const val FRUIT_LIST = "FRUIT_LIST"
-    const val SETTINGS = "SETTINGS"
+    const val IMAGE = "IMAGE"
 }
