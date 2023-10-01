@@ -11,12 +11,17 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.work.Data
+import androidx.work.OneTimeWorkRequest
+import androidx.work.WorkManager
 import coil.compose.AsyncImage
+import com.example.fakepopfit.utils.MyWorkManager
 
 @Composable
 fun ImageScreen(imageScreenViewModel: ImageScreenViewModel) {
-
+    val context = LocalContext.current
     val url = remember {
         mutableStateOf("")
     }
@@ -45,6 +50,18 @@ fun ImageScreen(imageScreenViewModel: ImageScreenViewModel) {
             imageUrl.value = imageScreenViewModel.get()!!
         }) {
             Text(text = "Загрузить")
+        }
+        Button(onClick = {
+            val delaySeconds = 10
+            val inputData = Data.Builder().putInt("delaySeconds", delaySeconds).build()
+            val workRequest = OneTimeWorkRequest.Builder(MyWorkManager::class.java)
+                .setInputData(inputData)
+                .build()
+
+            WorkManager.getInstance(context).enqueue(workRequest)
+
+        }) {
+            Text(text = "Установить таймер")
         }
     }
 }

@@ -65,6 +65,7 @@ dependencies {
 
     //BottomNavBar
     implementation("androidx.compose.material:material:1.5.2")
+    implementation("androidx.work:work-runtime-ktx:2.8.1")
 
     //Room
     val room_version = "2.5.2"
